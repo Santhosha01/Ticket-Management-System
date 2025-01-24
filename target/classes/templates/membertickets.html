@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tickets Details</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        textarea {
+            width: 300px;
+            height: 100px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+        }
+        textarea:focus {
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<h1>All Ticket Details</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Raised By</th>
+        <th>Problem Type</th>
+        <th>Problem Description</th>
+        <th>Status</th>
+        <th>Solution</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over ticketList from the model -->
+    <tr th:each="data : ${ticketList}">
+        <form th:action="@{/memberTicket}" method="post">
+            <!-- Display ticket details -->
+            <td th:text="${data.id}"></td>
+            <td th:text="${data.raisedby}"></td>
+            <td th:text="${data.problemType}"></td>
+            <td th:text="${data.problemDescription}"></td>
+            <td th:text="${data.status}"></td>
+
+            <!-- Solution Text Area -->
+            <td>
+                <textarea name="solution" placeholder="Enter solution here..."></textarea>
+            </td>
+
+            <!-- Hidden Inputs to Pass Ticket Data -->
+            <input type="hidden" name="raisedBy" th:value="${data.raisedby}" />
+            <input type="hidden" name="problemType" th:value="${data.problemType}" />
+            <input type="hidden" name="problemDescription" th:value="${data.problemDescription}" />
+            <input type="hidden" name="ticketId" th:value="${data.id}" />
+            <input type="hidden" name="role" th:value="${data.assignedby}">
+            <!-- Submit Button -->
+            <td>
+                <button type="submit">solve</button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

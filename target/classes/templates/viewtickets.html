@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+<h1>All Tickets</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Raised By</th>
+        <th>Problem Type</th>
+        <th>Problem Description</th>
+        <th>Status</th>
+        <th>Assigned By</th>
+        <th>Solution</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf Loop to iterate over ticketList -->
+    <tr th:each="data : ${ticketList}">
+        <td th:text="${data.raisedby}">Raised By</td>
+        <td th:text="${data.problemType}">Problem Type</td>
+        <td th:text="${data.problemDescription}">Problem Description</td>
+
+        <td th:text="${data.status}">Status</td>
+        <!-- Show the 'Assigned By' column only if status is 'assigned' or 'solved' -->
+        <td th:text="${data.assignedby}">Assigned By</td>
+
+        <!-- Show the 'Solution' column only if status is 'solved' -->
+        <td th:text="${data.solution}">Solution</td>
+
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

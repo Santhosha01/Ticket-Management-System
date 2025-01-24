@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Tickets Details</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+<h1>All Ticket Details</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Raised By</th>
+        <th>Problem Type</th>
+        <th>Problem Description</th>
+        <th>Status</th>
+        <th>Assign Role</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over ticketList from the model -->
+    <tr th:each="data : ${ticketList}">
+        <form th:action="@{/assignTicket}" method="post">
+            <!-- Display ticket details -->
+            <td th:text="${data.id}">Id</td>
+            <td th:text="${data.raisedby}">Raised By</td>
+            <td th:text="${data.problemType}">Problem Type</td>
+            <td th:text="${data.problemDescription}">Problem Description</td>
+            <td th:text="${data.status}">Status</td>
+
+            <!-- Role Assignment -->
+            <td th:if="${data.status == 'raised'}">
+                <select name="role" required>
+                    <option value="" disabled selected>Select Role</option>
+                    <!-- Dynamically populate member list from the controller -->
+                    <option th:each="member : ${memberList}"
+                            th:value="${member.name}" th:text="${member.name}"></option>
+                </select>
+            </td>
+
+            <!-- Else, show the assigned role -->
+            <td th:if="${data.status != 'raised'}" th:text="${data.assignedby}"></td>
+
+            <!-- Hidden Inputs to Pass Ticket Data -->
+            <input type="hidden" name="ticketId" th:value="${data.id}" /> <!-- Pass the ticket ID -->
+
+            <!-- Submit Button -->
+            <td>
+                <button type="submit"
+                        th:disabled="${data.status == 'assigned'}"
+                        th:text="${data.status == 'assigned' ? 'Assigned' : 'Assign'}"></button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
